@@ -1,0 +1,36 @@
+   1:     -	7000          			ORG		7000H
+   2:     -	3C00          	VIDEO	EQU		3C00H
+   3:    0+10	7000  21003C  	START	LD		HL,VIDEO	;SOURCE
+   4:   10+10	7003  11013C  			LD		DE,VIDEO+1	;DEST. ADDRESS
+   5:   20+10	7006  010004  			LD		BC,400H		;BYTE COUNT
+   6:   30+10	7009  36BF    			LD		(HL),0BFH	;GRAPHICS BYTE
+   7:   40+16+5	700B  EDB0    			LDIR
+   8:				;DELAY LOOP TO KEEP WHITED-OUT SCREEN ON
+   9:   56+7	700D  0605    			LD		B,5
+  10:   63+10	700F  21FFFF  	LP1		LD		HL,0FFFFH	;VALUE TO DECREMENT
+  11:   73+6	7012  2B      	LP2		DEC		HL
+  12:   79+4	7013  7C      			LD		A,H
+  13:   83+4	7014  B5      			OR		L		;HL=0?
+  14:   87+10	7015  C21270  			JP		NZ,LP2		;IF NO DEC AGAIN
+  15:   97+8+5	7018  10F5    			DJNZ		LP1		;DEC.B--B=0?
+  16:  105+17	701A  CD2D40  			CALL		$402d		;EXIT TO OS
+  17:				;		JP		0H		;RETURN TO BASIC
+  18:     -	7000          			END		START
+
+
+
+Statistics:
+
+     3	passes
+     0	jr promotions
+     4	symbols
+    29	bytes
+
+
+
+Symbol Table:
+
+LP1             700F      28687
+LP2             7012      28690
+START           7000      28672
+VIDEO          =3C00      15360
